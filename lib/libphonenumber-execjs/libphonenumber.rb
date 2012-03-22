@@ -22,6 +22,29 @@ class Libphonenumber
     context.eval "i18n.phonenumbers.PhoneNumberUtil.getInstance().parseAndKeepRawInput(#{make_param(str)},#{make_param(default_region)})"
   end
 
+  def full_details(str="",default_region="",default_carrier="")
+    full_details =<<-CLOSURE
+      (function(num,region,carier){
+        region = ( region==null ) ? '' : region;
+        carier = ( carier==null ) ? '' : carier;
+        var out  = {};
+        var util = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+        num = util.parseAndKeepRawInput(num,region);
+        for (var ix in num.values_) { 
+          out[num.fields_[ix].name_] = num.values_[ix];
+        }
+        out.is_valid_number = util.isValidNumber(num);
+        out.is_valid_number_for_region = util.isValidNumberForRegion(num,region);
+        out.region = util.getRegionCodeForNumber(num);
+        out.is_possible_number = util.isPossibleNumber(num);
+        out.line_type = util.getNumberType(num);
+        out.line_name = (function(code){for (var attr in i18n.phonenumbers.PhoneNumberType){ if (i18n.phonenumbers.PhoneNumberType[attr]== code) return attr; }}).call(this,out.line_type);
+        return out;
+      }).call(this,#{make_param(str)},#{make_param(default_region)},#{make_param(default_carrier)})
+CLOSURE
+    context.eval full_details
+  end
+
   def simple
     @simple ||= Simple.new(self)
   end
