@@ -18,6 +18,10 @@ class Libphonenumber
     context.eval "i18n.phonenumbers.PhoneNumberUtil.getInstance().parse(#{make_param(str)},#{make_param(default_region)})"
   end
 
+  def parse_raw(str="", default_region="")
+    context.eval "i18n.phonenumbers.PhoneNumberUtil.getInstance().parseAndKeepRawInput(#{make_param(str)},#{make_param(default_region)})"
+  end
+
   def simple
     @simple ||= Simple.new(self)
   end
