@@ -38,6 +38,7 @@ class Libphonenumber
         out.region = util.getRegionCodeForNumber(num);
         out.is_possible_number = util.isPossibleNumber(num);
         out.line_type = util.getNumberType(num);
+        out.national_format= util.format(num, i18n.phonenumbers.PhoneNumberFormat.NATIONAL);
         out.line_name = (function(code){for (var attr in i18n.phonenumbers.PhoneNumberType){ if (i18n.phonenumbers.PhoneNumberType[attr]== code) return attr; }}).call(this,out.line_type);
         return out;
       }).call(this,#{make_param(str)},#{make_param(default_region)},#{make_param(default_carrier)})
