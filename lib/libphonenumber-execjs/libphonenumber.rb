@@ -67,6 +67,7 @@ CLOSURE
     def get_e164_with_region(str, cc=nil, ndc=nil)
       result = {}
       phone_with_meta = @context.call "getE164PhoneNumberWithMeta", str, cc, ndc
+      phone_with_meta = ["",""] if phone_with_meta.empty?
       result[:e164] = phone_with_meta[0]
       result[:region] = @context.eval "i18n.phonenumbers.PhoneNumberUtil.getInstance().getRegionCodeForCountryCode(#{make_param(phone_with_meta[1])})"
       result[:region].downcase! unless result[:region].nil?
