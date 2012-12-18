@@ -51,7 +51,8 @@ CLOSURE
   end
 
   def make_param(str)
-    "'#{str.gsub(/[']/, '\\\\\'')}'"
+    param = str.nil? ? "null" : "'#{str.gsub(/[']/, '\\\\\'')}'" 
+    return param
   end
   class Simple
 
